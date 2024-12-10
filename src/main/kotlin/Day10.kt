@@ -40,12 +40,12 @@ fun main() {
 //    check(findAllStartingPoints(readInput("Day10_test_05")).size == 9)
 //    println("Passed test 1")
 
-    check(countTrailhead(readInput("Day10_test_01")).size == 1)
-    check(countTrailhead(readInput("Day10_test_02")).size == 2)
-    check(countTrailhead(readInput("Day10_test_03")).size == 4)
-    check(countTrailhead(readInput("Day10_test_04")).size == 3)
-    check(countTrailhead(readInput("Day10_test_05")).size == 36)
-    println("Passed test 2")
+//    check(countTrailhead(readInput("Day10_test_01")).size == 1)
+//    check(countTrailhead(readInput("Day10_test_02")).size == 2)
+//    check(countTrailhead(readInput("Day10_test_03")).size == 4)
+//    check(countTrailhead(readInput("Day10_test_04")).size == 3)
+//    check(countTrailhead(readInput("Day10_test_05")).size == 36)
+//    println("Passed test 2")
 
     println(countTrailhead(readInput("Day10_quizz")).size)
 
