@@ -23,11 +23,11 @@ fun main() {
 
     }
 
-    fun countTrailhead(input: List<String>): List<Node> {
+    fun countTrailhead(input: List<String>, canRevisitNeigbor: Boolean): List<Node> {
         val board = createBoard(input)
 
         val peaks: List<Node> = findAllStartingPoints(input)
-            .map { DFS(board).findReachablePeaks(it) }
+            .map { DFS(board).findReachablePeaks(it, canRevisitNeighbor = canRevisitNeigbor) }
             .flatten()
         return peaks
     }
@@ -40,15 +40,22 @@ fun main() {
 //    check(findAllStartingPoints(readInput("Day10_test_05")).size == 9)
 //    println("Passed test 1")
 
-//    check(countTrailhead(readInput("Day10_test_01")).size == 1)
-//    check(countTrailhead(readInput("Day10_test_02")).size == 2)
-//    check(countTrailhead(readInput("Day10_test_03")).size == 4)
-//    check(countTrailhead(readInput("Day10_test_04")).size == 3)
-//    check(countTrailhead(readInput("Day10_test_05")).size == 36)
+//    check(countTrailhead(readInput("Day10_test_01"), false).size == 1)
+//    check(countTrailhead(readInput("Day10_test_02"), false).size == 2)
+//    check(countTrailhead(readInput("Day10_test_03"), false).size == 4)
+//    check(countTrailhead(readInput("Day10_test_04"), false).size == 3)
+//    check(countTrailhead(readInput("Day10_test_05"), false).size == 36)
 //    println("Passed test 2")
 
-    println(countTrailhead(readInput("Day10_quizz")).size)
+//    println(countTrailhead(readInput("Day10_quizz"), false).size)
 
+//    check(countTrailhead(readInput("Day10_test_06"), true).size == 3)
+//    check(countTrailhead(readInput("Day10_test_07"), true).size == 13)
+//    check(countTrailhead(readInput("Day10_test_08"), true).size == 227)
+    check(countTrailhead(readInput("Day10_test_09"), true).size == 81)
+//    println("Passed test 3")
+
+        println(countTrailhead(readInput("Day10_quizz"), true).size)
 }
 
 data class Node(val location: Location, val value: Int)
@@ -58,10 +65,10 @@ class DFS(private val board: List<List<Node>>) {
     private val boardLength = board[0].size
     private val boardHeight = board.size
 
-    fun findReachablePeaks(start: Node, endValue: Int = 9): List<Node> {
+    fun findReachablePeaks(start: Node, endValue: Int = 9, canRevisitNeighbor:Boolean): List<Node> {
         val visited = mutableSetOf<Node>()
         val stack = Stack<Node>()
-        val reachedPeaks = mutableSetOf<Node>()
+        val reachedPeaks = if (!canRevisitNeighbor) mutableSetOf<Node>() else mutableListOf()
         stack.push(start)
         while (stack.isNotEmpty()) {
             val current = stack.pop()
@@ -70,7 +77,11 @@ class DFS(private val board: List<List<Node>>) {
             }
             visited.add(current)
             val neighbors = current.getNeighbors()
-            stack.addAll(neighbors.filter { it !in visited })
+            if (!canRevisitNeighbor) {
+                stack.addAll(neighbors.filter { it !in visited })
+            } else {
+                stack.addAll(neighbors)
+            }
         }
         return reachedPeaks.toList()
     }
